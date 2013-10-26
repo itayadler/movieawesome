@@ -1,0 +1,21 @@
+== README
+
+== IMDBPy Schema
+
+This scheme is a little tricky, so I'm writing down all the details needed to build a node and
+a relationship table for export:
+
+*** Tables summary
+
+**** Title table
+This table is the mother table for all features (TV, Movie etc). 
+Fields of interest:
+
+* Title (Name of the feature)
+* kind_id (Identifier of the feature, 1 = Movie)
+* production_year (Speaks for it self)
+
+== TODO
+
+* Ruby script that creates CSV files for the Movie/Person nodes and their relationships.
+* A UI for offering movie recommendations based on a Movie.

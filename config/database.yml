@@ -1,0 +1,13 @@
+development:
+  adapter: postgresql
+  host: localhost
+  database: imdb
+  pool: 5
+  timeout: 5000
+
+test:
+  adapter: postgresql
+  host: localhost
+  database: imdb_test
+  pool: 5
+  timeout: 5000

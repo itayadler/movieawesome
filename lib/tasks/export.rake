@@ -58,8 +58,6 @@ namespace :export do
     INNER JOIN genre_nodes ON genre_nodes.name = movie_info.info 
     WHERE movie_info.info_type_id = 3
   SQL
-  PERSON_NODES_TO_CSV = <<-SQL
-  SQL
 
   desc "exports movie/person tables to nodes and relationships"
   task :neo4j_csv => [:environment] do

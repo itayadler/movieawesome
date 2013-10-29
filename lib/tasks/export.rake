@@ -88,8 +88,8 @@ namespace :export do
   def export_to_csv(columns, table_name)
     save_path = "#{Rails.root}/#{table_name}.csv"
     script = <<-SQL
-      copy (SELECT #{columns.join(', ')} FROM #{table_name}) TO '#{save_path}' csv header delimiter E'\t'
+      COPY (SELECT #{columns.join(', ')} FROM #{table_name}) TO '#{save_path}' CSV HEADER DELIMITER E'\t'
     SQL
-    execute_script_with_log("COPY TABLE #{table_name} to #{save_path}", script)
+    execute_script_with_log("COPY #{table_name} TO #{save_path}", script)
   end
 end

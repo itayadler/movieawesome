@@ -1,0 +1,4 @@
+if [ -f "$rvm_path/scripts/rvm" ] && [ -f ".ruby-gemset" ]; then
+  source "$rvm_path/scripts/rvm"
+  rvm use ".ruby-gemset"
+fi

@@ -1,5 +1,11 @@
-# For more information see: http://emberjs.com/guides/routing/
+MA.Router.map ()->
+  @resource('movies', ->
+    @route('show', path: '/:movie_id')
+  )
 
-Movieawesome.Router.map ()->
-  # @resource('posts')
+MA.MoviesShowRoute = Ember.Route.extend
+  model: (params)->
+    @get('store').find('movie', params.movie_id)
 
+  setupController: (controller, movie)->
+    controller.set('model', movie)

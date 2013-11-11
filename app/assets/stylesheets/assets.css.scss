@@ -1,3 +1,19 @@
 // Place all the styles related to the Assets controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.main {
+  margin-bottom: 50px;
+}
+.search {
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+  //background-color: #f1f1f1;
+}
+.movie-autocomplete {
+  background-color: #fff;
+}
+
+.find-recommendations {
+  margin-left: 10px;
+}

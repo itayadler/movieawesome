@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jquery_core": "git://github.com/components/jquery.git#~1.9",
+    "isotope": "~1.5"
+  }
+}

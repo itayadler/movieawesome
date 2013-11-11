@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs
+//= require typeahead
 //= require handlebars
 //= require ember
 //= require ember-data

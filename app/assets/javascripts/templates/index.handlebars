@@ -1,14 +1,13 @@
-<div class="search">
-  {{view MA.TypeaheadTextField selectedMovieBinding="selectedMovie" class="movie-autocomplete" remote="http://movieawesome.dev/api/movies?q=%QUERY" placeholder="Start with a movie title.."}}
-  <button class="btn btn-default find-recommendations" {{action query}}>Find Recommendations</button>
-</div>
+<div class="index">
+  <div class="search">
+    {{view MA.TypeaheadTextField controllerBinding="this" selectedMovieBinding="selectedMovie" class="movie-autocomplete" remote="/api/movies?q=%QUERY" placeholder="Start with a movie title.."}}
+    <button class="btn btn-default find-recommendations" {{action query selectedMovie}}>Find Recommendations</button>
+  </div>
 
-<ul class="recommendations">
-  {{#each movie in movieToRecommend.recommendations}}
-    <li>{{movie.movie_title}}</li>
-  {{else}}
-    <div class="no-recommendations">
-      No recommendations found.
-    </div>
-  {{/each}}
-</ul>
+  <ul class="recommendations">
+    {{#each movie in movieToRecommend.recommendations}}
+    <li {{action 'recommendationSelected' movie}}>{{movie.movie_title}} ({{movie.production_year}})</li>
+    {{else}}
+    {{/each}}
+  </ul>
+<div>

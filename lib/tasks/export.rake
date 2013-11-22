@@ -15,13 +15,14 @@ namespace :export do
     DROP TABLE IF EXISTS #{MOVIE_GENRE_RELATIONSHIPS};
   SQL
   CREATE_MOVIE_NODES_TABLE = <<-SQL
-    SELECT row_number() OVER (ORDER BY title.id) as node_id, title.id as title_id, title AS movie_title, 
-    production_year, movie_info_idx.info as rating
-    INTO #{MOVIE_NODES} 
+    SELECT title.id as title_id, title AS movie_title, 
+    production_year, 
+    CASE WHEN info_type_id = 100 THEN info END AS votes,
+    CASE WHEN info_type_id = 101 THEN info END AS rating
     FROM title 
     INNER JOIN movie_info_idx ON movie_info_idx.movie_id = title.id 
     WHERE kind_id = 1
-    AND movie_info_idx.info_type_id = 101
+    GROUP by 1,2,3
     ORDER BY title.id
   SQL
   #kind_id 1 is the a feature of type movie.

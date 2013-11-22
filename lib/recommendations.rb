@@ -7,11 +7,11 @@ class Recommendations
     script = <<-GREMLIN
       g.v(#{movie_node_id}).as('x').out.in
       .groupCount.cap().next()
-      .sort{-it.value}[0..11].collect{ [movie_title: it.key.movie_title, rank: it.value, production_year: it.key.production_year, id: it.key.id] }
+      .sort{-it.value}[0..10].collect{ r = it.key.map.next(); r.put('rank', it.value); r }
     GREMLIN
     raw_result = $neo.execute_script(script)
-    raw_result.map do |result|
-      Recommendation.new(result["id"], result["rating"], result["movie_title"], result["production_year"], result["rank"])
+    raw_result.reject { |result| result["node_id"] == movie_node_id.to_s }.map do |result|
+      Recommendation.new(result["node_id"], result["rating"], result["movie_title"], result["production_year"], result["rank"])
     end
   end
 

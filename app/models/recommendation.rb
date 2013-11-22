@@ -11,5 +11,9 @@ class Recommendation
     @rank = rank
   end
 
+  def image_url
+    "http://api.movieposterdb.com/image?title=#{CGI.escape(@movie_title + " " + @production_year.to_s)}&api_key=demo&secret=175d21687261&width=150"
+  end
+
 end
 

@@ -18,5 +18,8 @@ MA.TypeaheadTextField = Ember.View.extend
     @$().on('typeahead:selected', ($event, datum)=>
       Ember.set(@, 'selectedMovie', datum)
     )
+    @controller.addObserver('selectedMovie', =>
+      @$().val(@controller.get('selectedMovie').value)
+    )
 
 

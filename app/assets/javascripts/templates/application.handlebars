@@ -1,15 +1,12 @@
-<div class="container">
-  <div class="jumbotron">
-    <h1>Movie Awesome</h1>
-    <p class="lead">Find a movie to watch by starting from a movie you liked.</p>
-    <p>The recommendations engine was built with Neo4j, IMDBPy etc. (Read more here)</p>
+<iframe width="100%" height="100%" {{bind-attr src="youtubeSrc"}} frameborder="0" allowfullscreen></iframe>
+<div class="main">
+  <h1>Movie Awesome</h1>
+
+  <div class="jumbotron container">
+    <div class="main">
+      {{outlet}}
+    </div>
   </div>
 
-  <div class="main">
-    {{outlet}}
-  </div>
-
-  <div class="footer">
-    <p>© Awesome Corporation 2013</p>
-  </div>
+  <footer>© Awesome Corporation 2013</footer>
 </div>

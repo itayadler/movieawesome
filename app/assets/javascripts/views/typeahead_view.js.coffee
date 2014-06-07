@@ -22,4 +22,7 @@ MA.TypeaheadTextField = Ember.View.extend
       @$().val(@controller.get('selectedMovie').value)
     )
 
+  keyPress: (e)->
+    if e.keyCode == 13
+      console.log 'enter'
 

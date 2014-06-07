@@ -9,3 +9,9 @@ DONE! A UI for offering movie recommendations based on a Movie using EmberJS.
 an API that can find a thumbnail based on a movie name and production year is needed..
 * Use IMDB's autocomplete instead of the local fuzzy search to improve movie search
  (Example: http://lab.abhinayrathore.com/imdb_suggest)
+
+* Add production year and imdb rating to movie title.
+* Add user history.
+* Intro popup 
+  * Choose a genre (from a movie buff list)
+  * Choose your destiny (movie)

@@ -11,10 +11,32 @@ iframe {
   right: 0;
   left: 0;
   z-index: -1;
+  &.blurred {
+    -webkit-filter: blur(10px);
+  }
+}
+
+.tt-dropdown-menu {
+  font-weight: normal;
+  background-color: rgba(0,0,0,0.2);
+  margin-top: 4px;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+}
+
+.twitter-typeahead {
+  width: 100%;
+}
+
+.tt-hint {
+  width: 100%;
 }
 
 h1 {
-  font-family: 'Galindo', cursive;
+  //font-family: 'Galindo', cursive;
+  font-family: 'Alegreya SC', serif;
+  font-style: italic;
+  font-weight: 900;
   position: fixed;
   top: 0;
   left: 10;
@@ -23,14 +45,35 @@ h1 {
   padding: 0;
   padding-left: 10px;
   padding-top: 5px;
+  width: 100%;
+  input {
+    font-family: 'Alegreya SC', serif;
+    font-style: italic;
+  }
+}
+
+input.movie-autocomplete {
+  outline: none;
+  color: white;
+  background-color: transparent;
+  border: 0;
+  padding: 12px 12px !important;
+  background-color: rgba(0,0,0,0.4);
+  width: 100%;
+}
+
+.tt-hint {
+  padding: 12px 12px !important;
 }
 
 footer {
+  font-family: Verdana;
   position: fixed;
   bottom: 0;
-  right: 0;
+  left: 0;
   color: #fff;
-  padding-right: 5px;
+  padding-left: 5px;
+  font-size: 12px;
 }
 
 li {

@@ -15,5 +15,6 @@
 /log/*.log
 /tmp
 /neo4j
+/export_graph_csv
 .powenv
 *.csv

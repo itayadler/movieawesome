@@ -77,11 +77,14 @@ namespace :export do
     execute_script_with_log('CREATE MOVIE PERSON RELATIONSHIPS TABLE', CREATE_MOVIE_PERSON_RELATIONSHIPS_TABLE)
     execute_script_with_log('CREATE MOVIE GENRE RELATIONSHIPS TABLE', CREATE_MOVIE_GENRE_RELATIONSHIPS_TABLE)
 
-    export_to_csv(['node_id', 'title_id', 'movie_title', 'production_year', 'rating', 'votes'], MOVIE_NODES)
-    export_to_csv(['node_id','person_id','name'], PERSON_NODES)
-    export_to_csv(['node_id','name'], GENRE_NODES)
-    export_to_csv(['start',"#{MOVIE_PERSON_RELATIONSHIPS}.end",'type'], MOVIE_PERSON_RELATIONSHIPS)
-    export_to_csv(['start',"#{MOVIE_GENRE_RELATIONSHIPS}.end",'type'], MOVIE_GENRE_RELATIONSHIPS)
+    save_path = "#{Rails.root}/export_graph_csv"
+    Dir.mkdir(save_path) unless Dir.exist?(save_path)
+
+    export_to_csv(['node_id', 'title_id', 'movie_title', 'production_year', 'rating', 'votes'], MOVIE_NODES, save_path)
+    export_to_csv(['node_id','person_id','name'], PERSON_NODES, save_path)
+    export_to_csv(['node_id','name'], GENRE_NODES, save_path)
+    export_to_csv(['start',"#{MOVIE_PERSON_RELATIONSHIPS}.end",'type'], MOVIE_PERSON_RELATIONSHIPS, save_path)
+    export_to_csv(['start',"#{MOVIE_GENRE_RELATIONSHIPS}.end",'type'], MOVIE_GENRE_RELATIONSHIPS, save_path)
   end
 
   def execute_script_with_log(name, script)
@@ -92,8 +95,8 @@ namespace :export do
     puts "Finished executing #{name} in #{benchmark} seconds"
   end
 
-  def export_to_csv(columns, table_name)
-    save_path = "#{Rails.root}/#{table_name}.csv"
+  def export_to_csv(columns, table_name, save_path)
+    save_path = "#{save_path}/#{table_name}.csv"
     script = <<-SQL
       COPY (SELECT #{columns.join(', ')} FROM #{table_name}) TO '#{save_path}' CSV HEADER DELIMITER E'\t'
     SQL

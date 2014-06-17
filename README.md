@@ -25,6 +25,16 @@ the graph can be customised
 * Neo4j 1.9+
 * PostgreSQL 9.3+
 
+## Prerequisites (Instructions for Mac OSX)
+
+- Installing `batch-import`
+  1. `git submodule update --init`
+  2. `brew install maven`
+- Installing Neo4j 1.9.4
+  NOTE: The Gemfile.lock is on a `neography` version that should install 1.9.4
+  0. `bundle install` #(Assuming you've done this already)
+  1. `rake neo4j:install`
+
 ## TODO
 
 - [ ] !! Streamline the process of creating a graph from scratch

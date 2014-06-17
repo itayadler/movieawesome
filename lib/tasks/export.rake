@@ -3,31 +3,37 @@ require 'benchmark'
 namespace :export do
   MOVIE_NODES = 'movie_nodes'
   PERSON_NODES = 'person_nodes'
-  MOVIE_PERSON_RELATIONSHIPS = 'movie_person_relationships'
   GENRE_NODES = 'genre_nodes'
+  MOVIE_PERSON_RELATIONSHIPS = 'movie_person_relationships'
   MOVIE_GENRE_RELATIONSHIPS = 'movie_genre_relationships'
 
   DROP_TEMP_TABLES = <<-SQL
     DROP TABLE IF EXISTS #{MOVIE_NODES};
     DROP TABLE IF EXISTS #{PERSON_NODES};
-    DROP TABLE IF EXISTS #{MOVIE_PERSON_RELATIONSHIPS};
     DROP TABLE IF EXISTS #{GENRE_NODES};
+    DROP TABLE IF EXISTS #{MOVIE_PERSON_RELATIONSHIPS};
     DROP TABLE IF EXISTS #{MOVIE_GENRE_RELATIONSHIPS};
   SQL
   CREATE_MOVIE_NODES_TABLE = <<-SQL
-    SELECT title.id as title_id, title AS movie_title, 
-    production_year, 
-    CASE WHEN info_type_id = 100 THEN info END AS votes,
-    CASE WHEN info_type_id = 101 THEN info END AS rating
-    FROM title 
-    INNER JOIN movie_info_idx ON movie_info_idx.movie_id = title.id 
-    WHERE kind_id = 1
-    GROUP by 1,2,3
-    ORDER BY title.id
+    SELECT row_number() OVER (ORDER BY title_id) as node_id,
+    title_id, movie_title, production_year, votes, rating
+    INTO movie_nodes
+    FROM
+    (
+      SELECT title.id as title_id, title AS movie_title, 
+      production_year, 
+      MAX(CASE WHEN info_type_id = 100 THEN info END) votes,
+      MAX(CASE WHEN info_type_id = 101 THEN info END) rating
+      FROM title 
+      INNER JOIN movie_info_idx ON movie_info_idx.movie_id = title.id 
+      WHERE kind_id = 1
+      GROUP BY 1
+      ORDER BY 1
+    ) AS t1
   SQL
   #kind_id 1 is the a feature of type movie.
   CREATE_PERSON_NODES_TABLE = <<-SQL
-    SELECT (SELECT count(*) from movie_nodes)+row_number() OVER (ORDER BY person_info.id) as node_id, person_info.id as person_info_id, person_info.person_id, person_info.info as name 
+    SELECT (SELECT count(*) from movie_nodes)+row_number() OVER (ORDER BY person_info.id) as node_id, person_info.person_id, person_info.info as name 
     INTO #{PERSON_NODES} 
     FROM person_info 
     INNER JOIN info_type ON info_type.id = person_info.info_type_id 
@@ -67,14 +73,14 @@ namespace :export do
     execute_script_with_log('DROP TEMP TABLES', DROP_TEMP_TABLES)
     execute_script_with_log('CREATE MOVIE NODES TABLE', CREATE_MOVIE_NODES_TABLE)
     execute_script_with_log('CREATE PERSON NODES TABLE', CREATE_PERSON_NODES_TABLE)
-    execute_script_with_log('CREATE MOVIE PERSON RELATIONSHIPS TABLE', CREATE_MOVIE_PERSON_RELATIONSHIPS_TABLE)
     execute_script_with_log('CREATE GENRE NODES TABLE', CREATE_GENRE_NODES_TABLE)
+    execute_script_with_log('CREATE MOVIE PERSON RELATIONSHIPS TABLE', CREATE_MOVIE_PERSON_RELATIONSHIPS_TABLE)
     execute_script_with_log('CREATE MOVIE GENRE RELATIONSHIPS TABLE', CREATE_MOVIE_GENRE_RELATIONSHIPS_TABLE)
 
-    export_to_csv(['node_id', 'title_id', 'movie_title', 'production_year', 'rating'], MOVIE_NODES)
+    export_to_csv(['node_id', 'title_id', 'movie_title', 'production_year', 'rating', 'votes'], MOVIE_NODES)
     export_to_csv(['node_id','person_id','name'], PERSON_NODES)
-    export_to_csv(['start',"#{MOVIE_PERSON_RELATIONSHIPS}.end",'type'], MOVIE_PERSON_RELATIONSHIPS)
     export_to_csv(['node_id','name'], GENRE_NODES)
+    export_to_csv(['start',"#{MOVIE_PERSON_RELATIONSHIPS}.end",'type'], MOVIE_PERSON_RELATIONSHIPS)
     export_to_csv(['start',"#{MOVIE_GENRE_RELATIONSHIPS}.end",'type'], MOVIE_GENRE_RELATIONSHIPS)
   end
 

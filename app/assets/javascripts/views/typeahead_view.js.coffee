@@ -1,4 +1,4 @@
-MA.TypeaheadTextField = Ember.View.extend
+MA.TypeaheadTextField = Ember.View.extend(Ember.ViewTargetActionSupport,
   attributes: ['remote', 'local', 'name', 'prefetch']
   events: ['typeahead:autocompleted', 'typeahead:selected', 'typeahead:closed', 'typeahead:opened', 'typeahead:initialized']
 
@@ -16,7 +16,7 @@ MA.TypeaheadTextField = Ember.View.extend
     @$().typeahead(options)
     @$().addClass(@class) if @class
     @$().on('typeahead:selected', ($event, datum)=>
-      Ember.set(@, 'selectedMovie', datum)
+      @controller.send('query', datum)
     )
     @controller.addObserver('selectedMovie', =>
       @$().val(@controller.get('selectedMovie').value)
@@ -25,4 +25,4 @@ MA.TypeaheadTextField = Ember.View.extend
   keyPress: (e)->
     if e.keyCode == 13
       console.log 'enter'
-
+)

@@ -1,4 +1,6 @@
-if [ -f "$rvm_path/scripts/rvm" ] && [ -f ".ruby-gemset" ]; then
+#!/bin/bash
+set -e
+if [ -f "$rvm_path/scripts/rvm" ] && [ -f .ruby-gemset ]; then
   source "$rvm_path/scripts/rvm"
-  rvm use ".ruby-gemset"
+  rvm use `cat .ruby-version`@`cat .ruby-gemset`
 fi

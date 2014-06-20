@@ -29,11 +29,12 @@ MA.ApplicationController = Ember.ObjectController.extend
       )
 
   _switchTrailer: (title, year)->
+    youtubeFeedURL = encodeURI("http://gdata.youtube.com/feeds/videos?vq=#{title} #{year} trailer&alt=json-in-script&results=1")
     $.ajax(
-      url: "http://gdata.youtube.com/feeds/videos?vq=#{title} #{year} trailer&alt=json-in-script&results=1"
+      url: youtubeFeedURL
       dataType: 'jsonp'
       success: ((response) =>
         youtubeId = response.feed.entry[0].id.$t.split("/")[5]
-        @get('controllers.application').set('youtubeId', youtubeId)
+        @set('youtubeId', youtubeId)
       )
     )

@@ -5,7 +5,7 @@ class Api::MoviesController < ApplicationController
   end
 
   def show
-    movie = MovieNode.where(node_id: params[:id]).first
+    movie = MovieNode.where(movie_title: params[:id]).first
     render json: movie, serializer: MovieSerializer
   end
 end

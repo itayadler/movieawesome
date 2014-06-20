@@ -1,7 +1,7 @@
 <iframe width="100%" height="100%" {{bind-attr src="youtubeSrc"}} frameborder="0" allowfullscreen></iframe>
 <div class="main">
   <h1>
-    {{view MA.TypeaheadTextField controllerBinding="this" selectedMovieBinding="selectedMovie" class="movie-autocomplete" remote="/api/movies?q=%QUERY" placeholder="Start with a movie title.."}}
+    {{view MA.TypeaheadTextField controllerBinding="this" selectedMovieBinding="selectedMovie" class="movie-autocomplete" placeholder="Start with a movie title.."}}
   </h1>
   <ul class="recommendations">
     {{#each movie in movieToRecommend.recommendations}}

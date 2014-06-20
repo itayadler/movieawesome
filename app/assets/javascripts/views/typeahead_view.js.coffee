@@ -7,7 +7,21 @@ MA.TypeaheadTextField = Ember.View.extend(Ember.ViewTargetActionSupport,
   classNames: 'autocomplete'
 
   didInsertElement: ->
-    options = {}
+    options = {
+      remote:
+        url: "http://sg.media-imdb.com/suggests/%QUERY.json"
+        dataType: 'jsonp'
+        jsonp: false
+        jsonpCallback: "imdb$%QUERY"
+        replace: (url, query)=>
+          url.replace("%QUERY", @_imdbCompatibleQuery(query))
+        filter: (parsedResponse)=>
+          parsedResponse.d.map((row)->
+            value: row.l
+            production_year: row.y
+            thumb: row.i
+          )
+    }
     
     @get('attributes').forEach((attr) =>
       options[attr] = @[attr] if @[attr] 
@@ -21,6 +35,11 @@ MA.TypeaheadTextField = Ember.View.extend(Ember.ViewTargetActionSupport,
     @controller.addObserver('selectedMovie', =>
       @$().val(@controller.get('selectedMovie').value)
     )
+
+  _imdbCompatibleQuery: (query)->
+    query = query.toLowerCase()
+    query = query.replace(/[ ]/g, '_')
+    "#{query[0]}/#{query}"
 
   keyPress: (e)->
     if e.keyCode == 13

@@ -17,7 +17,7 @@ MA.ApplicationController = Ember.ObjectController.extend
       return unless movie
 
       @_switchTrailer(movie.value, movie.production_year)
-      @get('store').find('movie', movie.id).then( (movie)=>
+      @get('store').find('movie', movie.value).then( (movie)=>
         @set('movieToRecommend', movie)
       )
 

@@ -309,6 +309,12 @@
                 dataType: o.dataType || "json",
                 beforeSend: o.beforeSend
             };
+            if ('jsonp' in o) {
+              this.ajaxSettings.jsonp = o.jsonp;
+            }
+            if ('jsonpCallback' in o) {
+              this.jsonpCallback = o.jsonpCallback;
+            }
             this._get = (/^throttle$/i.test(o.rateLimitFn) ? utils.throttle : utils.debounce)(this._get, o.rateLimitWait || 300);
         }
         utils.mixin(Transport.prototype, {
@@ -344,7 +350,11 @@
             get: function(query, cb) {
                 var that = this, encodedQuery = encodeURIComponent(query || ""), url, resp;
                 cb = cb || utils.noop;
-                url = this.replace ? this.replace(this.url, encodedQuery) : this.url.replace(this.wildcard, encodedQuery);
+                url = this.replace ? this.replace(this.url, query) : this.url.replace(this.wildcard, encodedQuery);
+                if ('jsonpCallback' in this) {
+                  q = query.toLowerCase().replace(/ /g, '_')
+                  this.ajaxSettings.jsonpCallback = this.jsonpCallback.replace(this.wildcard, q);
+                }
                 if (resp = requestCache.get(url)) {
                     utils.defer(function() {
                         cb(that.filter ? that.filter(resp) : resp);

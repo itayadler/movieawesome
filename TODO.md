@@ -15,7 +15,8 @@
   the imdbID of a movie, so
 an API that can find a thumbnail based on a movie name and production year is 
 needed..
-- [ ] Use IMDB's autocomplete instead of the local fuzzy search to improve movie 
+- [x] Use IMDB's autocomplete instead of the local fuzzy search to improve movie 
+  - [ ] Refactor backend to stop using MovieNode
   search
  (Example)[http://lab.abhinayrathore.com/imdb_suggest]
 - [ ] Add production year and imdb rating to movie title

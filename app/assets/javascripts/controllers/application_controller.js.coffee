@@ -24,7 +24,7 @@ MA.ApplicationController = Ember.ObjectController.extend
     recommendationSelected: (movie)->
       @set('selectedMovie', { id: movie.id, value: movie.get('movie_title'), production_year: movie.get('production_year') })
       @_switchTrailer(movie.get('movie_title'), movie.get('production_year'))
-      @get('store').find('movie', movie.id).then( (movie)=>
+      @get('store').find('movie', movie.get('movie_title')).then( (movie)=>
         @set('movieToRecommend', movie)
       )
 
